@@ -1,3 +1,6 @@
+import os
+import sys
+
 from lib.src.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
 from lib.src.structures.vrp_solver import VRPSolver
 from lib.src.utils.graph_generator import GraphGenerator
@@ -23,7 +26,8 @@ def start_http_server() -> None:
 
 
 if __name__ == '__main__':
-  # start_http_server()
-
-  for i in range(1, 4):
-    main(f'{i}.in')
+  if '--http-server' in sys.argv:
+    start_http_server()
+  else:
+    for filename in os.listdir('./data'):
+      main(filename)
