@@ -9,11 +9,12 @@ def main(filename: str) -> None:
   """ Solve VRP problem """
   graph = GraphGenerator.from_file(filename)
 
-  solver = VRPSolver(graph, source_node=0)
-
   GraphVisualization(graph).visualize(add_weight_labels=True)
 
-  solver.solve_vrp(DijkstraWithNodeFiltering, report=True)
+  solver = VRPSolver(graph, source_node=0)
+
+  for solution_method in (DijkstraWithNodeFiltering,):
+    solver.solve_vrp(solution_method, report=True)
 
 
 def start_http_server() -> None:
