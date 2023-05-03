@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VRP | Solver</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>-- Vehicle Routing Problem --</h1>
+  </header>
+
+  <div class="container">
+    <label for="graphPointsCount">
+      Points count:
+      <input type="text" name="width" id="graphPointsCount" oninput="loadTable(parseInt(this.value))">
+    </label>
+  </div>
+  <div id="graphTableContainer">
+    <table id="graphTable">
+    </table>
+  </div>
+  <div id="submitButtonContainer"></div>
+  <div id="answerContainer"></div>
+</body>
+
+<script src="/static/scripts.js"></script>
+
+</html>

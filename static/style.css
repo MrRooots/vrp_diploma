@@ -1,0 +1,56 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "JetBrains Mono NL SemiBold", sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    /*justify-content: center;*/
+    align-items: center;
+}
+
+header {
+    margin-bottom: 100px;
+}
+
+#graphTableContainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#graphPointsCount, #graphTableContainer input {
+    width: 50px;
+    padding: 10px 5px 10px 5px;
+    margin: 0 0 0 5px;
+    text-align: center;
+}
+
+#graphTable td {
+    vertical-align: center;
+}
+
+#graphTable {
+    border-spacing: 5px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 15px 30px;
+    color: white;
+    background-color: darkseagreen;
+    border: none;
+    border-radius: 8px;
+}
+
+button:hover {
+    background-color: seagreen;
+    transition: .5s;
+}
+
+#answerContainer {
+    margin-top: 15px;
+}
