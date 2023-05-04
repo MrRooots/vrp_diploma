@@ -1,7 +1,3 @@
-from lib.src.utils.graph_generator import GraphGenerator
-from lib.src.utils.graph_visualization import GraphVisualization
-
-
 def dijkstra(graph, start, destination=None):
   n = len(graph)
   distances = [float('inf')] * n

@@ -1,4 +1,4 @@
-from lib.src.interfaces.i_vrp_solver import IVRPSolver
+from src.core.interfaces.i_vrp_solver import IVRPSolver
 
 
 class BellmanFordWithNodeFiltering(IVRPSolver):

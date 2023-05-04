@@ -1,11 +1,11 @@
 import os
 import sys
 
-from lib.src.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
-from lib.src.structures.vrp_solver import VRPSolver
-from lib.src.utils.graph_generator import GraphGenerator
-from lib.src.utils.graph_visualization import GraphVisualization
-from lib.web.socket_server import SocketServer
+from src.core.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
+from src.core.structures.vrp_solver import VRPSolver
+from src.core.utils.graph_generator import GraphGenerator
+from src.core.utils.graph_visualization import GraphVisualization
+from src.web.socket_server import SocketServer
 
 
 def main(filename: str) -> None:
@@ -26,7 +26,7 @@ def start_http_server() -> None:
 
 
 if __name__ == '__main__':
-  if '--http-server' in sys.argv:
+  if '--server' in sys.argv:
     start_http_server()
   else:
     for filename in os.listdir('./data'):

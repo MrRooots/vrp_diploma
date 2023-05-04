@@ -1,7 +1,7 @@
 from typing import Type
 
-from lib.src.interfaces.i_vrp_solver import IVRPSolver
-from lib.src.structures.graph import Graph
+from src.core.interfaces.i_vrp_solver import IVRPSolver
+from src.core.structures.graph import Graph
 
 
 class VRPSolver:

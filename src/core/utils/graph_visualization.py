@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from lib.src.structures.graph import Graph
+from src.core.structures.graph import Graph
 
 
 class GraphVisualization:

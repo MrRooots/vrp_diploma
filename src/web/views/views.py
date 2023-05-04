@@ -1,8 +1,8 @@
 import json
 
-from lib.src.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
-from lib.src.structures.vrp_solver import VRPSolver
-from lib.src.utils.graph_generator import GraphGenerator
+from src.core.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
+from src.core.structures.vrp_solver import VRPSolver
+from src.core.utils.graph_generator import GraphGenerator
 
 
 class Views:

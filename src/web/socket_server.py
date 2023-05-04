@@ -1,9 +1,9 @@
 import socket
 import json
 
-from lib.web.data.enums import RequestMethod, ResponseCode
-from lib.web.interfaces.i_socket_server import ISocketServer
-from lib.web.views.views import Views
+from src.web.data.enums import RequestMethod, ResponseCode
+from src.web.interfaces.i_socket_server import ISocketServer
+from src.web.views.views import Views
 
 ADDRESS = 'localhost'
 PORT = 5000

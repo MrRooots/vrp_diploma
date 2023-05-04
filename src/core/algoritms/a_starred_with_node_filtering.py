@@ -1,5 +1,4 @@
-from lib.src.interfaces.i_vrp_solver import IVRPSolver
-from lib.src.structures.graph import Graph
+from src.core.structures.graph import Graph
 
 
 class AStarredWithNodeFiltering(IVehicleRoutingProblemSolver):
