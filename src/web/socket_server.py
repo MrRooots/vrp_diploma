@@ -10,6 +10,7 @@ PORT = 5000
 URLS = {
   '/': Views.index,
   '/solve': Views.solve_vrp,
+  '/terminate': exit,
   '/static/scripts.js': Views.load_scripts,
   '/static/style.css': Views.load_styles,
 }
@@ -77,7 +78,7 @@ class SocketServer(ISocketServer):
 
     while True:
       client_socket, address = self._server_socket.accept()
-      request = client_socket.recv(1024).decode('utf-8')
+      request = client_socket.recv(2048).decode('utf-8')
 
       if request:
         print('Incoming request: {}'.format(request.split('\r\n')[0]))

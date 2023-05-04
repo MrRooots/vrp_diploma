@@ -25,7 +25,35 @@ body {
 }
 
 header {
+    margin-top: 25px;
     margin-bottom: 100px;
+}
+
+button {
+    margin-left: 15px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    background-color: darkseagreen;
+}
+
+#terminateButtonContainer button {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    padding: 10px 15px;
+    background-color: lightcoral;
+}
+
+#terminateButtonContainer button:hover {
+    background-color: indianred;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #graphTableContainer {
@@ -51,13 +79,8 @@ header {
     border-spacing: 5px;
 }
 
-button {
+#submitButtonContainer button {
     margin-top: 10px;
-    padding: 15px 30px;
-    color: white;
-    background-color: darkseagreen;
-    border: none;
-    border-radius: 8px;
 }
 
 button:hover {

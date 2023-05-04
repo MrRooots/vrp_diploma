@@ -33,6 +33,10 @@ function loadTable(size) {
 
   const buttonContainer = document.getElementById('submitButtonContainer');
   buttonContainer.innerHTML = '<button type="submit" onclick="solveVRP()">Solve</button>';
+
+  document.getElementById('randomizeButtonContainer').innerHTML = `
+    <button type="submit" onclick="fillRandomWeights()">Randomize</button>
+  `;
 }
 
 /** Collect data from table */
@@ -75,6 +79,7 @@ function solveVRP() {
 
   xhr.onreadystatechange = function (response) {
     if (xhr.readyState === 4) {
+      console.log(xhr.responseText);
       const responseJson = JSON.parse(xhr.responseText);
       console.log(responseJson);
 
@@ -100,4 +105,32 @@ function inputOnChange(instance, i, j, size) {
       ? inputs[size * j + i].value = instance.value
       : null
   )
+}
+
+/** Fill all inputs with random values */
+function fillRandomWeights() {
+  const size = document.getElementById('graphPointsCount').value;
+  const inputs = document.querySelectorAll('input:not(#graphPointsCount)');
+
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
+      if (i < j) {
+        inputs[size * i + j].value = Math.floor(Math.random() * (49) + 1);
+        inputs[size * i + j].dispatchEvent(new Event('keyup'));
+      }
+    }
+  }
+}
+
+function terminateServer() {
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/terminate');
+
+  xhr.send(
+    JSON.stringify({
+      terminate: true
+    })
+  );
+
+
 }

@@ -10,11 +10,18 @@
     <h1>-- Vehicle Routing Problem --</h1>
   </header>
 
+  <div id="terminateButtonContainer">
+    <button onclick="terminateServer()"><b>&#10006</b></button>
+  </div>
+
   <div class="container">
     <label for="graphPointsCount">
       Points count:
       <input type="text" name="size" id="graphPointsCount" oninput="loadTable(parseInt(this.value))">
     </label>
+    <div id="randomizeButtonContainer">
+      <button type="submit" onclick="fillRandomWeights()">Randomize</button>
+    </div>
   </div>
   <div id="graphTableContainer">
     <table id="graphTable">
