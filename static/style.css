@@ -3,13 +3,24 @@
     margin: 0;
     box-sizing: border-box;
     font-family: "JetBrains Mono NL SemiBold", sans-serif;
+
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
 }
 
 body {
     display: flex;
     flex-direction: column;
     height: 90vh;
-    /*justify-content: center;*/
     align-items: center;
 }
 
@@ -23,10 +34,13 @@ header {
 }
 
 #graphPointsCount, #graphTableContainer input {
-    width: 50px;
+    width: 70px;
     padding: 10px 5px 10px 5px;
     margin: 0 0 0 5px;
     text-align: center;
+
+    border: lightgrey 1px solid;
+    border-radius: 4px;
 }
 
 #graphTable td {
