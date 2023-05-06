@@ -50,6 +50,10 @@ button {
     background-color: indianred;
 }
 
+#clearAllButtonContainer button {
+    background-color: lightcoral;
+}
+
 .container {
     display: flex;
     justify-content: space-between;

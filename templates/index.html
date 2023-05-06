@@ -16,19 +16,29 @@
 
   <div class="container">
     <label for="graphPointsCount">
-      Points count:
+      Number of nodes:
       <input type="text" name="size" id="graphPointsCount" oninput="loadTable(parseInt(this.value))">
     </label>
+
     <div id="randomizeButtonContainer">
       <button type="submit" onclick="fillRandomWeights()">Randomize</button>
     </div>
+
+    <div id="clearAllButtonContainer">
+      <button type="submit" onclick="clearAll()">Clear</button>
+    </div>
   </div>
+
   <div id="graphTableContainer">
     <table id="graphTable">
     </table>
   </div>
+
   <div id="submitButtonContainer"></div>
+
   <div id="answerContainer"></div>
+
+  <div id="imageContainer"></div>
 </body>
 
 <script src="/static/scripts.js"></script>

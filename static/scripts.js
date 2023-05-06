@@ -77,15 +77,20 @@ function solveVRP() {
     })
   );
 
-  xhr.onreadystatechange = function (response) {
+  xhr.onreadystatechange = function (_) {
     if (xhr.readyState === 4) {
-      console.log(xhr.responseText);
       const responseJson = JSON.parse(xhr.responseText);
-      console.log(responseJson);
-
       const answerContainer = document.getElementById('answerContainer');
+
       answerContainer.innerHTML = `<h3>The shortest path is: ${responseJson['path']}</h3>`
       answerContainer.innerHTML += `<h3>The shortest path length is: ${responseJson['length']}</h3>`
+
+      // Add image
+      const image = new Image(640, 480);
+      const imageContainer = document.getElementById('imageContainer');
+      image.src = `data:image/png;base64,${responseJson['image']}`;
+      imageContainer.innerHTML = '';
+      imageContainer.append(image);
     }
   }
 }
@@ -120,6 +125,15 @@ function fillRandomWeights() {
       }
     }
   }
+}
+
+/** Remove table, solution and image blocks */
+function clearAll() {
+  document.getElementById('graphTable').innerHTML = '';
+  document.getElementById('submitButtonContainer').innerHTML = '';
+  document.getElementById('graphPointsCount').value = '';
+  document.getElementById('answerContainer').innerHTML = '';
+  document.getElementById('imageContainer').innerHTML = '';
 }
 
 function terminateServer() {

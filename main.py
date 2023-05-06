@@ -26,8 +26,9 @@ def start_http_server() -> None:
 
 
 if __name__ == '__main__':
-  if '--server' in sys.argv:
-    start_http_server()
-  else:
-    for filename in os.listdir('./data'):
-      main(filename)
+  # if '--server' in sys.argv:
+  start_http_server()
+  # else:
+  #   main('3.in')
+  # for filename in os.listdir('./data/input'):
+  #   main(filename)

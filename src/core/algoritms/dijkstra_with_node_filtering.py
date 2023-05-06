@@ -28,7 +28,8 @@ class DijkstraWithNodeFiltering(IVRPSolver):
     while not (visited[destination] if destination else all(visited)):
       # Find the unvisited node with the smallest distance
       min_vertex = min(
-        (u for u in range(graph.vertex_count) if not visited[u]), key=lambda x: distances[x]
+        (u for u in range(graph.vertex_count) if not visited[u]),
+        key=lambda x: distances[x]
       )
 
       visited[min_vertex] = True

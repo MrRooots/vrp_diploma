@@ -19,7 +19,7 @@ class ISocketServer:
     """ Generate response header """
 
   @staticmethod
-  def _generate_content(code, url, data=None) -> str:
+  def _generate_content(method: str, code: int, url: str, data=None) -> str:
     """ Generate response content """
 
   @staticmethod

@@ -54,4 +54,5 @@ class GraphVisualization:
                                    layout,
                                    edge_labels=edge_labels)
 
+    plt.savefig('./data/img/graph.png', format='png')
     plt.show()

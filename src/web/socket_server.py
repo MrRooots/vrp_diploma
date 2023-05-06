@@ -6,13 +6,29 @@ from src.web.interfaces.i_socket_server import ISocketServer
 from src.web.views.views import Views
 
 ADDRESS = 'localhost'
-PORT = 5000
+PORT = 8000
 URLS = {
-  '/': Views.index,
-  '/solve': Views.solve_vrp,
-  '/terminate': exit,
-  '/static/scripts.js': Views.load_scripts,
-  '/static/style.css': Views.load_styles,
+  '/': {
+    'method': 'GET',
+    'action': Views.index
+  },
+  '/static/scripts.js': {
+    'method': 'GET',
+    'action': Views.load_scripts
+  },
+  '/static/style.css': {
+    'method': 'GET',
+    'action': Views.load_styles
+  },
+
+  '/solve': {
+    'method': 'POST',
+    'action': Views.solve_vrp
+  },
+  '/terminate': {
+    'method': 'POST',
+    'action': exit
+  },
 }
 
 
@@ -52,7 +68,7 @@ class SocketServer(ISocketServer):
     return f'{header}\r\n\r\n', code
 
   @staticmethod
-  def _generate_content(code, url, data=None) -> str:
+  def _generate_content(method, code, url, data=None) -> str:
     if code == ResponseCode.NOT_FOUND:
       return Views.not_found()
     elif code == ResponseCode.METHOD_NOT_ALLOWED:
@@ -60,25 +76,29 @@ class SocketServer(ISocketServer):
     elif code == ResponseCode.SERVER_FAILURE:
       return Views.internal_server_error()
     else:
-      return URLS[url]() if data is None else URLS[url](data)
+      if URLS[url]['method'] == method:
+        return URLS[url]['action']() if data is None else URLS[url]['action'](data)
+      else:
+        return Views.not_found()
 
   @staticmethod
   def _generate_response(request: str) -> bytes:
     try:
       method, url, data = SocketServer._parse_request(request)
       headers, code = SocketServer._generate_header(method, url)
-      body = SocketServer._generate_content(code, url, data)
+      body = SocketServer._generate_content(method, code, url, data)
 
       return (headers + body).encode('utf-8')
-    except IndexError:
-      return b''
+    except (IndexError, TypeError, json.decoder.JSONDecodeError) as e:
+      print(e)
+      return 'HTTP/1.1 500 Internal Server Error\r\n\r\n'.encode('utf-8')
 
   def run(self) -> None:
     print(f'Server started at: {ADDRESS}:{PORT}')
 
     while True:
       client_socket, address = self._server_socket.accept()
-      request = client_socket.recv(2048).decode('utf-8')
+      request = client_socket.recv(16384).decode('utf-8')
 
       if request:
         print('Incoming request: {}'.format(request.split('\r\n')[0]))

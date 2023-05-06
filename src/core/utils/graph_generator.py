@@ -12,16 +12,11 @@ class GraphGenerator:
     return Graph(matrix)
 
   @staticmethod
-  def from_adjacency_list(connections: dict[str, tuple[tuple[str, float]]]) -> Graph:
-    """ Generate `Graph` from given dict of connections """
-    pass
-
-  @staticmethod
   def from_file(filename: str) -> Graph:
     """ Generate `Graph` from given file """
     matrix = []
 
-    with open(f'data/{filename}', 'r') as file:
+    with open(f'data/input/{filename}', 'r') as file:
       while line := file.readline():
         matrix.append([])
 

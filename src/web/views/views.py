@@ -1,8 +1,10 @@
+import base64
 import json
 
 from src.core.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
 from src.core.structures.vrp_solver import VRPSolver
 from src.core.utils.graph_generator import GraphGenerator
+from src.core.utils.graph_visualization import GraphVisualization
 
 
 class Views:
@@ -43,7 +45,11 @@ class Views:
     solver = VRPSolver(graph)
     path, length = solver.solve_vrp(DijkstraWithNodeFiltering)
 
+    # Visualize and save graph image to ./data/img/graph.png
+    GraphVisualization(graph).visualize(add_weight_labels=True)
+
     return json.dumps({
       'path': path,
-      'length': length
+      'length': length,
+      'image': base64.b64encode(open('./data/img/graph.png', 'rb').read()).decode()
     })
