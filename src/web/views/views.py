@@ -1,7 +1,7 @@
 import base64
 import json
 
-from src.core.algoritms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
+from src.core.algorithms.dijkstra_with_node_filtering import DijkstraWithNodeFiltering
 from src.core.structures.vrp_solver import VRPSolver
 from src.core.utils.graph_generator import GraphGenerator
 from src.core.utils.graph_visualization import GraphVisualization
