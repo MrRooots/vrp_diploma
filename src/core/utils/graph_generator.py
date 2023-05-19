@@ -14,13 +14,5 @@ class GraphGenerator:
   @staticmethod
   def from_file(filename: str) -> Graph:
     """ Generate `Graph` from given file """
-    matrix = []
-
     with open(f'data/input/{filename}', 'r') as file:
-      while line := file.readline():
-        matrix.append([])
-
-        for vertex in line.split():
-          matrix[-1].append(float(vertex))
-
-      return Graph(matrix=matrix)
+      return Graph(matrix=[[float(v) for v in line.split()] for line in file])
