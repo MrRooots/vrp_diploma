@@ -1,25 +1,27 @@
+from src.core.interfaces.algorithm import IAlgorithm
 from src.core.interfaces.i_vrp_solver import IVRPSolver
 from src.core.structures.graph import Graph
 
 
-class DijkstraWithNodeFiltering(IVRPSolver):
+class DijkstraAlgorithm(IVRPSolver, IAlgorithm):
   """
   Modified version of Dijkstra's algorithm
   called the "Dijkstra's Algorithm with Node Filtering"
 
-  Complexity:
+  Complexity
     - [Lists + double for]  -> O(V^2)
-    - [Binary Heap (heapq)] -> O(E + V log V)
-  Where:
-    E - number of edges
-    V - number of vertices
+    - [Binary Heap (heapq)] -> O(E + V * log(V))
+
+  Where
+    - E - number of edges
+    - V - number of vertices
   """
 
   @staticmethod
   def __solver(graph: Graph,
                source: int,
-               destination: int,
-               targets: list[int]):
+               destination: int | None,
+               targets: list[int] | None):
     distances = [float('inf')] * graph.vertex_count
     predecessor = [-1] * graph.vertex_count
     visited = [False] * graph.vertex_count
@@ -36,7 +38,7 @@ class DijkstraWithNodeFiltering(IVRPSolver):
 
       # Update the distances of the neighbors
       for neighbour, weight in enumerate(graph.matrix[min_vertex]):
-        if weight > 0 and not visited[neighbour]:
+        if weight is not None and weight > 0 and not visited[neighbour]:
           cost = distances[min_vertex] + weight
 
           if cost < distances[neighbour]:
@@ -57,16 +59,28 @@ class DijkstraWithNodeFiltering(IVRPSolver):
     return ' -> '.join(map(str, reversed(path)))
 
   @staticmethod
+  def run(graph: Graph,
+          source: int = 0,
+          destination: int = None,
+          targets: list[int] = None) -> tuple[list, list]:
+    distances, predecessor = DijkstraAlgorithm.__solver(graph,
+                                                        source=source,
+                                                        destination=destination,
+                                                        targets=targets)
+
+    return distances, predecessor
+
+  @staticmethod
   def solve_vrp(graph: Graph,
                 source: int,
                 destination: int,
                 targets: list[int]) -> tuple[str, float]:
-    distances, predecessor = DijkstraWithNodeFiltering.__solver(graph,
-                                                                source,
-                                                                destination,
-                                                                targets)
+    distances, predecessor = DijkstraAlgorithm.__solver(graph,
+                                                        source,
+                                                        destination,
+                                                        targets)
 
     return (
-      DijkstraWithNodeFiltering.__get_path(destination, predecessor),
+      DijkstraAlgorithm.__get_path(destination, predecessor),
       distances[destination]
     )
