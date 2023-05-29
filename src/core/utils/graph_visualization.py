@@ -11,14 +11,17 @@ class GraphVisualization:
 
   """ Graph draw potions """
   options = {'with_labels': True,
-             'edge_color': 'lightgreen',
-             'node_color': 'lightgreen',
+             'edge_color': '#3DA3F5',
+             'node_color': 'lightblue',
              'font_color': 'black',
-             'width': 3}
+             'width': 1.5}
+
+  graph: Graph = None
+  network_graph: nx.Graph | nx.DiGraph = None
 
   def __init__(self, graph: Graph) -> None:
-    self.graph: Graph = graph
-    self.network_graph: nx.Graph = nx.Graph()
+    self.graph = graph
+    self.network_graph = nx.Graph() if graph.is_symmetric else nx.DiGraph()
 
     self.__prepare_network_graph()
 
@@ -36,16 +39,27 @@ class GraphVisualization:
     """ Convert adjacency matrix to nx.Graph object """
     num_nodes = len(self.graph.matrix)
     self.network_graph.add_nodes_from(range(num_nodes))
+    # self.network_graph.add_weighted_edges_from([
+    #   (i, j, self.graph.matrix[i][j])
+    #   for i in range(num_nodes)
+    #   for j in range(i + 1, num_nodes)
+    #   if self.graph.matrix[i][j] is not None
+    # ])
     self.network_graph.add_weighted_edges_from([
-      (i, j, self.graph.matrix[i][j])
-      for i in range(num_nodes)
-      for j in range(i + 1, num_nodes)
-      if self.graph.matrix[i][j] > 0
+      (i, j, weight) if i != j else (i, j, 0)
+      for i, row in enumerate(self.graph.matrix)
+      for j, weight in enumerate(row) if weight is not None
     ])
 
-  def visualize(self, add_weight_labels: float = False) -> None:
+  def visualize(self,
+                add_weight_labels: float = False,
+                show: bool = True) -> None:
     """ Visualize the current graph """
-    layout = nx.spring_layout(self.network_graph)
+    if self.graph.layout is not None:
+      layout = self.graph.layout
+    else:
+      layout = nx.spring_layout(self.network_graph)
+
     nx.draw(self.network_graph, layout, **self.options)
 
     if add_weight_labels:
@@ -54,5 +68,5 @@ class GraphVisualization:
                                    layout,
                                    edge_labels=edge_labels)
 
-    plt.savefig('./data/img/graph.png', format='png')
-    plt.show()
+    plt.show() if show else plt.savefig('./data/img/graph.png', format='png')
+    plt.close()
