@@ -7,5 +7,5 @@ class IAlgorithm:
   """
 
   @staticmethod
-  def run(graph: Graph, **kwargs) -> tuple[list, list]:
+  def run(graph: Graph, **kwargs) -> tuple[list, list] | tuple[list[int], float]:
     """ Start pure algorithm for given graph without binding to VRP task """

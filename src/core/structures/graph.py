@@ -12,6 +12,9 @@ class Graph:
   # Adjacency matrix that represents the graph
   __matrix: Matrix = None
 
+  # Adjacency matrix with zeros instead of None
+  __safe_matrix: Matrix = None
+
   # Count of graph vertices
   __vertex_count: int = None
 
@@ -28,6 +31,17 @@ class Graph:
   def matrix(self) -> Matrix:
     """ Get the adjacency matrix of the graph """
     return self.__matrix
+
+  @property
+  def safe_matrix(self) -> Matrix:
+    """ Get the adjacency matrix with zeros instead of None """
+    if self.__safe_matrix is None:
+      self.__safe_matrix = [
+        [i if i is not None else 0 for i in row]
+        for row in self.__matrix
+      ]
+
+    return self.__safe_matrix
 
   @property
   def get_matrix_copy(self) -> Matrix:
