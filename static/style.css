@@ -1,0 +1,97 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "JetBrains Mono NL SemiBold", sans-serif;
+
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    align-items: center;
+}
+
+header {
+    margin-top: 25px;
+    margin-bottom: 100px;
+}
+
+button {
+    margin-left: 15px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    background-color: darkseagreen;
+}
+
+#terminateButtonContainer button {
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    padding: 10px 15px;
+    background-color: lightcoral;
+}
+
+#terminateButtonContainer button:hover {
+    background-color: indianred;
+}
+
+#clearAllButtonContainer button {
+    background-color: lightcoral;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#graphTableContainer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+#graphPointsCount, #graphTableContainer input {
+    width: 70px;
+    padding: 10px 5px 10px 5px;
+    margin: 0 0 0 5px;
+    text-align: center;
+
+    border: lightgrey 1px solid;
+    border-radius: 4px;
+}
+
+#graphTable td {
+    vertical-align: center;
+}
+
+#graphTable {
+    border-spacing: 5px;
+}
+
+#submitButtonContainer button {
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: seagreen;
+    transition: .5s;
+}
+
+#answerContainer {
+    margin-top: 15px;
+}

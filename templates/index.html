@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VRP | Solver</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>-- Vehicle Routing Problem --</h1>
+  </header>
+
+  <div id="terminateButtonContainer">
+    <button onclick="terminateServer()"><b>&#10006</b></button>
+  </div>
+
+  <div class="container">
+    <label for="graphPointsCount">
+      Number of nodes:
+      <input type="text" name="size" id="graphPointsCount" oninput="loadTable(parseInt(this.value))">
+    </label>
+
+    <div id="randomizeButtonContainer">
+      <button type="submit" onclick="fillRandomWeights()">Randomize</button>
+    </div>
+
+    <div id="clearAllButtonContainer">
+      <button type="submit" onclick="clearAll()">Clear</button>
+    </div>
+  </div>
+
+  <div id="graphTableContainer">
+    <table id="graphTable">
+    </table>
+  </div>
+
+  <div id="submitButtonContainer"></div>
+
+  <div id="answerContainer"></div>
+
+  <div id="imageContainer"></div>
+</body>
+
+<script src="/static/scripts.js"></script>
+
+</html>
