@@ -32,7 +32,7 @@ class GraphVisualization:
       (i, j): self.graph.matrix[i][j]
       for i in range(num_nodes)
       for j in range(i + 1, num_nodes)
-      if self.graph.matrix[i][j] > 0
+      if self.graph.safe_matrix[i][j] > 0
     }
 
   def __prepare_network_graph(self) -> None:

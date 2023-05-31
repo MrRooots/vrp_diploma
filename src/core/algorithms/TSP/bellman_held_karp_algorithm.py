@@ -1,7 +1,8 @@
-import numpy as np
+from functools import lru_cache
 
 from src.core.interfaces.algorithm import IAlgorithm
 from src.core.structures.graph import Graph
+from src.core.utils.utilities import Utilities
 
 
 class BellmanHeldKarpAlgorithm(IAlgorithm):
@@ -19,43 +20,48 @@ class BellmanHeldKarpAlgorithm(IAlgorithm):
   """
 
   @staticmethod
-  def dist(matrix, memo, ni: int, N: frozenset) -> float:
-    if not N:
-      return matrix[ni][0]
-
-    # Store the costs in the form (nj, dist(nj, N))
-    costs = [
-      (
-        nj,
-        matrix[ni][nj] + BellmanHeldKarpAlgorithm.dist(matrix,
-                                                       memo,
-                                                       nj,
-                                                       N.difference({nj}))
-      )
-      for nj in N
-    ]
-    nmin, min_cost = min(costs, key=lambda x: x[1])
-    memo[(ni, N)] = nmin
-
-    return min_cost
-
-  @staticmethod
+  @Utilities.timeit
   def run(graph: Graph, **kwargs) -> tuple[list[int], float]:
-    N = frozenset(range(1, graph.vertex_count))
-    memo: dict[tuple, int] = {}
+    vertexes: frozenset[int] = frozenset(range(1, graph.vertex_count))
+    memory: dict[tuple, int] = {}
 
-    best_distance = BellmanHeldKarpAlgorithm.dist(graph.safe_matrix,
-                                                  memo,
-                                                  0,
-                                                  N)
+    @lru_cache(maxsize=None)
+    def dist(current_vertex: int, vertexes: frozenset) -> float:
+      """
+      Recursively find all distances from `current_vertex`
+      to all vertexes in `vertexes` set and save calculated distances
+      into `memory` dict.
 
-    # Step 2: get path with the minimum distance
-    ni = 0  # start at the origin
-    solution = [0]
+      The smallest one will be returned
 
-    while N:
-      ni = memo[(ni, N)]
-      solution.append(ni)
-      N = N.difference({ni})
+      Note
+        Function is wrapped with @lru_cache decorator,
+        that saves function most recent calls.
+        When function called with already used arguments the cached result
+        will be returned instead of function execution
+      """
+      if not vertexes:
+        return graph.safe_matrix[current_vertex][0]
+
+      # Store the costs in the form (nj, dist(nj, N))
+      costs = [(
+        nj,
+        graph.safe_matrix[current_vertex][nj] + dist(nj, vertexes.difference({nj}))
+      ) for nj in vertexes]
+      minimum_vertex, min_cost = min(costs, key=lambda x: x[1])
+      memory[(current_vertex, vertexes)] = minimum_vertex
+
+      return min_cost
+
+    # Get the best path distance
+    best_distance = dist(0, vertexes)
+
+    current_vertex, solution = 0, [0]
+
+    # Restore the shortest path in a form of vertex array
+    while vertexes:
+      current_vertex = memory[(current_vertex, vertexes)]
+      solution.append(current_vertex)
+      vertexes = vertexes.difference({current_vertex})
 
     return solution, best_distance

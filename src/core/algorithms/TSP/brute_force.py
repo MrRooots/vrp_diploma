@@ -1,6 +1,7 @@
 from itertools import permutations
 from src.core.interfaces.algorithm import IAlgorithm
 from src.core.structures.graph import Graph
+from src.core.utils.utilities import Utilities
 
 
 class BruteForceAlgorithm(IAlgorithm):
@@ -17,19 +18,7 @@ class BruteForceAlgorithm(IAlgorithm):
   """
 
   @staticmethod
-  def distance(matrix: list[list[float]],
-               permutation: list[int]):
-    """ Get path distance for given `permutation` """
-    ind1 = permutation
-    ind2 = permutation[1:] + permutation[:1]
-    distance_sum = 0.0
-
-    for i in range(len(permutation)):
-      distance_sum += matrix[ind1[i]][ind2[i]]
-
-    return distance_sum
-
-  @staticmethod
+  @Utilities.timeit
   def run(graph: Graph, **kwargs) -> tuple[list[int], float]:
     points = range(1, graph.vertex_count)
     best_distance = float('inf')
@@ -37,7 +26,8 @@ class BruteForceAlgorithm(IAlgorithm):
 
     for partial_permutation in permutations(points):
       permutation = [0] + list(partial_permutation)
-      distance = BruteForceAlgorithm.distance(graph.safe_matrix, permutation)
+      distance = Utilities.compute_permutation_distance(graph.safe_matrix,
+                                                        permutation)
 
       if distance < best_distance:
         best_distance = distance
