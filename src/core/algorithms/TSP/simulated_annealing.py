@@ -13,6 +13,11 @@ MAX_INNER_ITERATIONS_MULTIPLIER = 10
 
 
 class SimulatedAnnealingAlgorithm(IAlgorithm):
+  """
+  References
+    [1] Dréo, Johann, et al. Metaheuristics for hard optimization: methods and
+    case studies. Springer Science & Business Media, 2006.
+  """
   @staticmethod
   def _initial_temperature(graph: Graph,
                            x: list[int],
