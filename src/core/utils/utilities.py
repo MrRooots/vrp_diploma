@@ -24,7 +24,7 @@ class Utilities:
     def wrapper(*args, **kwargs):
       start = time.time()
       result = func(*args, **kwargs)
-      print(f'Execution time of {func.__qualname__}: {round((time.time() - start) * 1000, 2)} ms')
+      print(f'Execution time of {func.__qualname__}: {round((time.time() - start) * 1000, 8)} ms')
 
       return result
 
