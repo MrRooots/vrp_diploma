@@ -5,7 +5,7 @@ from src.core.utils.graph_generator import GraphGenerator
 from src.core.utils.graph_visualization import GraphVisualization
 from src.core.utils.report_manager import ReportManager
 
-graph = GraphGenerator.from_file('extreme_150.in')
+graph = GraphGenerator.from_file('6.in')
 # GraphVisualization(graph).visualize(add_weight_labels=True)
 
 # path, distances = BruteForceAlgorithm.run(graph)
