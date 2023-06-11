@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>VRP | Solver</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet"
+        type="text/css"
+        href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header>
@@ -41,6 +43,6 @@
   <div id="imageContainer"></div>
 </body>
 
-<script src="/static/scripts.js"></script>
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
 </html>

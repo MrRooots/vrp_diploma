@@ -15,6 +15,7 @@ function loadTable(size) {
 
   for (let i = 0; i < size; i++) {
     const tableRow = table.insertRow();
+    tableRow.setAttribute('id', 'adjacencyRow')
 
     for (let j = 0; j < size + 1; j++) {
       if (j === 0) {
@@ -43,7 +44,7 @@ function loadTable(size) {
 function getGraphContent() {
   const inputs = [];
 
-  document.querySelectorAll('tr:not(:first-child)').forEach(
+  document.querySelectorAll('tr[id="adjacencyRow"]').forEach(
     function (element) {
       inputs.push([]);
       element.querySelectorAll('td > input').forEach(
@@ -51,7 +52,7 @@ function getGraphContent() {
       );
     }
   );
-
+  console.log(inputs)
   return inputs;
 }
 
@@ -64,6 +65,10 @@ function solveVRP() {
       return;
     }
   }
+  const answerContainer = document.getElementById('answerContainer');
+  const imageContainer = document.getElementById('imageContainer');
+  answerContainer.innerHTML = '<h5 style="text-align: center; margin-bottom: 55px">Solution in progress, please wait...</h5>';
+  imageContainer.innerHTML = '';
 
   const xhr = new XMLHttpRequest();
 
@@ -80,14 +85,30 @@ function solveVRP() {
   xhr.onreadystatechange = function (_) {
     if (xhr.readyState === 4) {
       const responseJson = JSON.parse(xhr.responseText);
-      const answerContainer = document.getElementById('answerContainer');
 
-      answerContainer.innerHTML = `<h3>The shortest path is: ${responseJson['path']}</h3>`
-      answerContainer.innerHTML += `<h3>The shortest path length is: ${responseJson['length']}</h3>`
+      answerContainer.innerHTML = `
+        <table id="reportTable">
+          <tr>
+            <td id="reportTableLeftCell">Algorithm</td>
+            <td>${responseJson['execution_report']['algorithm']}</td>
+          </tr>
+          <tr>
+            <td id="reportTableLeftCell">Shortest path</td>
+            <td>${responseJson['path']}</td>
+          </tr>
+          <tr>
+            <td id="reportTableLeftCell">Length</td>
+            <td>${responseJson['length']}</td>
+          </tr>
+          <tr>
+            <td id="reportTableLeftCell">Execution time</td>
+            <td>${responseJson['execution_report']['execution_time']} ms</td>
+          </tr>
+        </table>
+      `;
 
       // Add image
       const image = new Image(640, 480);
-      const imageContainer = document.getElementById('imageContainer');
       image.src = `data:image/png;base64,${responseJson['image']}`;
       imageContainer.innerHTML = '';
       imageContainer.append(image);

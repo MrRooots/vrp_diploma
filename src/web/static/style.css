@@ -94,4 +94,21 @@ button:hover {
 
 #answerContainer {
     margin-top: 15px;
+    width: 100%;
+}
+
+#reportTable {
+    margin: auto;
+    /*text-align: center;*/
+    width: 75%;
+}
+
+#reportTable td {
+    padding: 10px
+}
+
+#reportTable, #reportTable th, #reportTable td {
+    font-size: 0.8rem;
+    border: 1px solid black;
+    border-collapse: collapse;
 }

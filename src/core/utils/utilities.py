@@ -1,34 +1,27 @@
-import time
 from random import sample
 
 Matrix = list[list[float]]
 
 
 class Utilities:
+  """
+  Some useful utilities
+  """
+
   @staticmethod
   def is_matrix_symmetric(matrix: list[list]) -> bool:
     """ Check if given 2d matrix is symmetric or not """
     length = len(matrix)
 
-    for i in range(length):
-      for j in range(length):
-        if matrix[i][j] != matrix[j][i]:
-          return False
-
-    return True
+    return all(
+      matrix[i][j] == matrix[j][i]
+      for i in range(length) for j in range(length)
+    )
 
   @staticmethod
-  def timeit(func: callable):
-    """ Simplest timer decorator """
-
-    def wrapper(*args, **kwargs):
-      start = time.time()
-      result = func(*args, **kwargs)
-      print(f'Execution time of {func.__qualname__}: {round((time.time() - start) * 1000, 8)} ms')
-
-      return result
-
-    return wrapper
+  def path_to_string(path: list[int], sep: str = ' -> ') -> str:
+    """ Convert given path to string: '1 -> 2 -> 3' """
+    return sep.join(map(str, path))
 
   @staticmethod
   def compute_permutation_distance(matrix: Matrix,
