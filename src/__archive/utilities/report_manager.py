@@ -1,4 +1,4 @@
-from src.core.structures.graph import Graph
+from src.core.models.graph import Graph
 
 
 class ReportManager:

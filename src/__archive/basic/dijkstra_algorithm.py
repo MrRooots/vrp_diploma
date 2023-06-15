@@ -1,9 +1,9 @@
-from src.core.interfaces.algorithm import IAlgorithm
-from src.core.interfaces.i_vrp_solver import IVRPSolver
-from src.core.structures.graph import Graph
+from src.core.interfaces.algorithm import ITSPAlgorithm
+from src.core.interfaces.i_tsp_solver import ITSPSolver
+from src.core.models.graph import Graph
 
 
-class DijkstraAlgorithm(IVRPSolver, IAlgorithm):
+class DijkstraAlgorithm(ITSPSolver, ITSPAlgorithm):
   """
   Modified version of Dijkstra's algorithm
   called the "Dijkstra's Algorithm with Node Filtering"
@@ -59,11 +59,11 @@ class DijkstraAlgorithm(IVRPSolver, IAlgorithm):
     return ' -> '.join(map(str, reversed(path)))
 
   @staticmethod
-  def run(graph: Graph,
+  def run(problem: Graph,
           source: int = 0,
           destination: int = None,
           targets: list[int] = None) -> tuple[list, list]:
-    distances, predecessor = DijkstraAlgorithm.__solver(graph,
+    distances, predecessor = DijkstraAlgorithm.__solver(problem,
                                                         source=source,
                                                         destination=destination,
                                                         targets=targets)
@@ -71,7 +71,7 @@ class DijkstraAlgorithm(IVRPSolver, IAlgorithm):
     return distances, predecessor
 
   @staticmethod
-  def solve_vrp(graph: Graph,
+  def solve_tsp(graph: Graph,
                 source: int,
                 destination: int,
                 targets: list[int]) -> tuple[str, float]:

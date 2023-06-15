@@ -1,11 +1,11 @@
-from src.core.algorithms.bellman_ford_algorithm import BellmanFordAlgorithm
-from src.core.algorithms.dijkstra_algorithm import DijkstraAlgorithm
-from src.core.interfaces.algorithm import IAlgorithm
-from src.core.interfaces.i_vrp_solver import IVRPSolver
-from src.core.structures.graph import Graph
+from src.__archive.basic.bellman_ford_algorithm import BellmanFordAlgorithm
+from src.__archive.basic.dijkstra_algorithm import DijkstraAlgorithm
+from src.core.interfaces.algorithm import ITSPAlgorithm
+from src.core.interfaces.i_tsp_solver import ITSPSolver
+from src.core.models.graph import Graph
 
 
-class JohnsonAlgorithm(IVRPSolver, IAlgorithm):
+class JohnsonAlgorithm(ITSPSolver, ITSPAlgorithm):
   """
   Johnson's algorithm implementation
 
@@ -46,32 +46,32 @@ class JohnsonAlgorithm(IVRPSolver, IAlgorithm):
       del graph.matrix[v][graph.vertex_count]
 
   @staticmethod
-  def run(graph: Graph, **kwargs) -> tuple[list, list]:
+  def run(problem: Graph, **kwargs) -> tuple[list, list]:
     """ Applies Johnson's to compute all-pairs shortest paths. """
-    n = graph.vertex_count
-    JohnsonAlgorithm.add_fiction_node(graph)
+    n = problem.vertex_count
+    JohnsonAlgorithm.add_fiction_node(problem)
 
-    h, _ = BellmanFordAlgorithm.run(graph,
-                                    source=graph.vertex_count - 1)
+    h, _ = BellmanFordAlgorithm.run(problem,
+                                    source=problem.vertex_count - 1)
 
-    JohnsonAlgorithm.remove_fiction_node(graph)
+    JohnsonAlgorithm.remove_fiction_node(problem)
 
     for u in range(n):
       for v in range(n):
-        if graph.matrix[u][v] is not None:
-          graph.matrix[u][v] += h[u] - h[v]
+        if problem.matrix[u][v] is not None:
+          problem.matrix[u][v] += h[u] - h[v]
 
     distances = [[None for _ in range(n)] for _ in range(n)]
     predecessors = [[None for _ in range(n)] for _ in range(n)]
 
     for u in range(n):
-      distances[u], predecessors[u] = DijkstraAlgorithm.run(graph, source=u)
+      distances[u], predecessors[u] = DijkstraAlgorithm.run(problem, source=u)
 
     for u in range(n):
       for v in range(n):
-        if graph.matrix[u][v] is not None:
+        if problem.matrix[u][v] is not None:
           delta_h = h[u] - h[v]
           distances[u][v] -= delta_h
-          graph.matrix[u][v] -= delta_h
+          problem.matrix[u][v] -= delta_h
 
     return distances, predecessors

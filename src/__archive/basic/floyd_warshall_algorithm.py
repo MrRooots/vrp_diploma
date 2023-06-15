@@ -1,11 +1,11 @@
-from src.core.interfaces.algorithm import IAlgorithm
-from src.core.structures.graph import Graph
+from src.core.interfaces.algorithm import ITSPAlgorithm
+from src.core.models.graph import Graph
 
 FloatMatrix: list[list[float]]
 NullableIntMatrix: list[list[int]]
 
 
-class FloydWarshallAlgorithm(IAlgorithm):
+class FloydWarshallAlgorithm(ITSPAlgorithm):
   """
   Floyd-Warshall algorithm implementation
 
@@ -23,26 +23,26 @@ class FloydWarshallAlgorithm(IAlgorithm):
   """
 
   @staticmethod
-  def run(graph: Graph, **kwargs) -> tuple[list, list]:
+  def run(problem: Graph, **kwargs) -> tuple[list, list]:
     distances: FloatMatrix = [
-      [float('inf')] * graph.vertex_count
-      for _ in range(graph.vertex_count)
+      [float('inf')] * problem.vertex_count
+      for _ in range(problem.vertex_count)
     ]
     predecessor: NullableIntMatrix = [
-      [-1] * graph.vertex_count
-      for _ in range(graph.vertex_count)
+      [-1] * problem.vertex_count
+      for _ in range(problem.vertex_count)
     ]
 
-    for row in range(graph.vertex_count):
+    for row in range(problem.vertex_count):
       distances[row][row] = 0
-      for v in range(graph.vertex_count):
-        if graph.matrix[row][v] is not None:
-          distances[row][v] = graph.matrix[row][v]
+      for v in range(problem.vertex_count):
+        if problem.matrix[row][v] is not None:
+          distances[row][v] = problem.matrix[row][v]
           predecessor[row][v] = v
 
-    for k in range(graph.vertex_count):
-      for row in range(graph.vertex_count):
-        for v in range(graph.vertex_count):
+    for k in range(problem.vertex_count):
+      for row in range(problem.vertex_count):
+        for v in range(problem.vertex_count):
           new_distance = distances[row][k] + distances[k][v]
 
           if new_distance < distances[row][v]:
@@ -50,7 +50,7 @@ class FloydWarshallAlgorithm(IAlgorithm):
             predecessor[row][v] = predecessor[row][k]
 
     # Check for negative weight cycles
-    if any(distances[u][u] < 0 for u in range(graph.vertex_count)):
+    if any(distances[u][u] < 0 for u in range(problem.vertex_count)):
       return [], []
 
     return distances, predecessor
