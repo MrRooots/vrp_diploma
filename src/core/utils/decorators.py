@@ -1,5 +1,5 @@
 import time
-from src.core.structures.result_model import ResultModel
+from src.core.models.result import ResultModel
 
 
 class Decorators:
@@ -17,10 +17,10 @@ class Decorators:
     return wrapper
 
   @staticmethod
-  def convert_to_result_model(func: callable):
+  def convert_to_result_model(func: callable) -> callable:
     """ Timer decorator that convert function result to `ResultModel` """
 
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> ResultModel:
       start = time.time()
       result = func(*args, **kwargs)
 

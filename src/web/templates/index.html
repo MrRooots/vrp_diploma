@@ -36,11 +36,21 @@
     </table>
   </div>
 
+  <div class="algorithmSelectContainer" style="margin: 30px 0 20px 0; text-align: center">
+    <label for="algorithmSelect">Select algorithm</label>
+    <br>
+    <select name="algorithmSelect" id="algorithmSelect">
+      <option value="bellman">Bellman–Held–Karp algorithm (MAX: 19 vertexes)</option>
+      <option value="brute-force">Brute force algorithm (MAX: 11 vertexes)</option>
+      <option value="simulated-annealing">Simulated Annealing algorithm (MAX: undefined)</option>
+    </select>
+  </div>
+
   <div id="submitButtonContainer"></div>
 
   <div id="answerContainer"></div>
 
-  <div id="imageContainer"></div>
+  <div id="imageContainer" style="max-width: 100%"></div>
 </body>
 
 <script src="{{ url_for('static', filename='scripts.js') }}"></script>

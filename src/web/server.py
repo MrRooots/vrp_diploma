@@ -1,5 +1,5 @@
 from src.web.app import app
-from src.web.view import *
+from src.web import views
 
 
 def run_server() -> None:

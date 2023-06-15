@@ -1,11 +1,12 @@
 from functools import lru_cache
 
-from src.core.interfaces.algorithm import IAlgorithm
-from src.core.structures.graph import Graph
-from src.core.utils.utilities import Utilities
+from src.core.interfaces.i_tsp_algorithm import ITSPAlgorithm
+from src.core.models.result import ResultModel
+from src.core.models.tsp_problem import TSPProblem
+from src.core.utils.decorators import Decorators
 
 
-class BellmanHeldKarpAlgorithm(IAlgorithm):
+class BellmanHeldKarpAlgorithm(ITSPAlgorithm):
   """
   Bellman–Held–Karp algorithm implementation
   This is dynamic programming algorithm proposed in 1962 independently
@@ -20,9 +21,9 @@ class BellmanHeldKarpAlgorithm(IAlgorithm):
   """
 
   @staticmethod
-  @Utilities.timeit
-  def run(graph: Graph, **kwargs) -> tuple[list[int], float]:
-    vertexes: frozenset[int] = frozenset(range(1, graph.vertex_count))
+  @Decorators.convert_to_result_model
+  def run(problem: TSPProblem, **kwargs):
+    vertexes: frozenset[int] = frozenset(range(1, problem.graph.vertex_count))
     memory: dict[tuple, int] = {}
 
     @lru_cache(maxsize=None)
@@ -41,12 +42,12 @@ class BellmanHeldKarpAlgorithm(IAlgorithm):
         will be returned instead of function execution
       """
       if not vertexes:
-        return graph.safe_matrix[current_vertex][0]
+        return problem.graph.safe_matrix[current_vertex][0]
 
       # Store the costs in the form (nj, dist(nj, N))
       costs = [(
         nj,
-        graph.safe_matrix[current_vertex][nj] + dist(nj, vertexes.difference({nj}))
+        problem.graph.safe_matrix[current_vertex][nj] + dist(nj, vertexes.difference({nj}))
       ) for nj in vertexes]
       minimum_vertex, min_cost = min(costs, key=lambda x: x[1])
       memory[(current_vertex, vertexes)] = minimum_vertex
@@ -64,4 +65,4 @@ class BellmanHeldKarpAlgorithm(IAlgorithm):
       solution.append(current_vertex)
       vertexes = vertexes.difference({current_vertex})
 
-    return solution, best_distance
+    return [solution], [best_distance]

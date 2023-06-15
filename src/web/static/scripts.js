@@ -4,6 +4,10 @@
  */
 function loadTable(size) {
   const table = document.getElementById('graphTable');
+  if (size >= 50) {
+    table.innerHTML = '';
+    return
+  }
   table.innerHTML = '';
 
   const header = table.createTHead();
@@ -52,6 +56,8 @@ function getGraphContent() {
       );
     }
   );
+
+
   console.log(inputs)
   return inputs;
 }
@@ -78,6 +84,7 @@ function solveVRP() {
 
   xhr.send(
     JSON.stringify({
+      algorithm: document.getElementById('algorithmSelect').value,
       points: getGraphContent()
     })
   );
@@ -108,10 +115,15 @@ function solveVRP() {
       `;
 
       // Add image
-      const image = new Image(640, 480);
+      const image = new Image(1000,1000);
       image.src = `data:image/png;base64,${responseJson['image']}`;
       imageContainer.innerHTML = '';
       imageContainer.append(image);
+
+      image.onload = () => window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }
 }
@@ -142,7 +154,8 @@ function fillRandomWeights() {
     for (let j = 0; j < size; j++) {
       if (i < j) {
         inputs[size * i + j].value = Math.floor(Math.random() * (49) + 1);
-        inputs[size * i + j].dispatchEvent(new Event('keyup'));
+      } else {
+        inputs[size * i + j].value = inputs[size * j + i].value
       }
     }
   }

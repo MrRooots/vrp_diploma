@@ -1,23 +1,30 @@
 from math import inf
+from random import sample
 from timeit import default_timer
 
 import numpy as np
 
 from src.core.algorithms.TSP.pertubation_schemes import neighborhood_gen
-from src.core.interfaces.algorithm import IAlgorithm
-from src.core.structures.graph import Graph
+from src.core.interfaces.i_tsp_algorithm import ITSPAlgorithm
+from src.core.models.graph import Graph
+from src.core.models.result import ResultModel
+from src.core.models.tsp_problem import TSPProblem
+from src.core.utils.decorators import Decorators
 from src.core.utils.utilities import Utilities
+
+Matrix = list[list[float]]
 
 MAX_NON_IMPROVEMENTS = 3
 MAX_INNER_ITERATIONS_MULTIPLIER = 10
 
 
-class SimulatedAnnealingAlgorithm(IAlgorithm):
+class SimulatedAnnealingAlgorithm(ITSPAlgorithm):
   """
   References
     [1] Dréo, Johann, et al. Metaheuristics for hard optimization: methods and
     case studies. Springer Science & Business Media, 2006.
   """
+
   @staticmethod
   def _initial_temperature(graph: Graph,
                            x: list[int],
@@ -43,7 +50,7 @@ class SimulatedAnnealingAlgorithm(IAlgorithm):
     dfx_list = []
     for _ in range(100):
       xn = SimulatedAnnealingAlgorithm._perturbation(x, perturbation_scheme)
-      fn = Utilities.compute_permutation_distance(graph.safe_matrix, xn)
+      fn = Utilities.permutation_distance(graph.safe_matrix, xn)
       dfx_list.append(fn - fx)
 
     dfx_mean = np.abs(np.mean(dfx_list))
@@ -56,16 +63,15 @@ class SimulatedAnnealingAlgorithm(IAlgorithm):
   def _perturbation(x: list[int], perturbation_scheme: str):
     """
     Generate a random neighbor of a current solution ``x``
-
-    In this case, we can use the generators created in the `local_search`
-    module, and pick the first solution. Since the neighborhood is randomized,
-    it is the same as creating a random perturbation.
     """
     return next(neighborhood_gen[perturbation_scheme](x))
 
   @staticmethod
   def _acceptance_rule(fx: float, fn: float, temp: float) -> bool:
-    """ Metropolis acceptance rule """
+    """
+    Metropolis acceptance rule.
+    Used for select sample from distribution
+    """
 
     dfx = fn - fx
     return (dfx < 0) or (
@@ -73,16 +79,36 @@ class SimulatedAnnealingAlgorithm(IAlgorithm):
     )
 
   @staticmethod
-  @Utilities.timeit
-  def run(graph: Graph,
+  def get_initial_solution(matrix: Matrix,
+                           x0: list = None) -> tuple[list[int], float]:
+    """
+    Return initial solution and its objective value
+
+    x0 - Permutation with initial solution.
+    If `x0` was provided, it is the same list
+
+    fx0 - Objective value of x0
+    """
+
+    if not x0:
+      n = len(matrix)
+      x0 = [0] + sample(range(1, n), n - 1)
+
+    fx0 = Utilities.permutation_distance(matrix, x0)
+    return x0, fx0
+
+  @staticmethod
+  @Decorators.convert_to_result_model
+  def run(problem: TSPProblem,
           x0: list[int] = None,
           perturbation_scheme: str = "two_opt",
           alpha: float = 0.9,
           time_limit: float = None,
-          log_steps: bool = False) -> tuple[list[int], float]:
-    x, fx = Utilities.setup_initial_solution(graph.safe_matrix, x0)
+          log_steps: bool = False,
+          **kwargs):
+    x, fx = SimulatedAnnealingAlgorithm.get_initial_solution(problem.graph.safe_matrix, x0)
 
-    temp = SimulatedAnnealingAlgorithm._initial_temperature(graph,
+    temp = SimulatedAnnealingAlgorithm._initial_temperature(problem.graph,
                                                             x,
                                                             fx,
                                                             perturbation_scheme)
@@ -106,7 +132,7 @@ class SimulatedAnnealingAlgorithm(IAlgorithm):
           break
 
         xn = SimulatedAnnealingAlgorithm._perturbation(x, perturbation_scheme)
-        fn = Utilities.compute_permutation_distance(graph.safe_matrix, xn)
+        fn = Utilities.permutation_distance(problem.graph.safe_matrix, xn)
 
         if SimulatedAnnealingAlgorithm._acceptance_rule(fx, fn, temp):
           x, fx = xn, fn
@@ -127,4 +153,4 @@ class SimulatedAnnealingAlgorithm(IAlgorithm):
       temp *= alpha  # temperature update
       k_without_improvements += k_accepted == 0
 
-    return x, fx
+    return [x], [fx]
