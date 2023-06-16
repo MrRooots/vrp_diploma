@@ -24,7 +24,7 @@ def main_tsp(problem_name: str) -> None:
     result = solution_method.run(problem, source=0)
     print(result.get_complete_report)
 
-    # GraphVisualization(problem, result.path).visualize(add_weight_labels=True)
+    GraphVisualization(problem, result.path).visualize(add_weight_labels=True)
 
 
 def main_vrp(problem_name: str = 'c101', customers_count: int = 25) -> None:

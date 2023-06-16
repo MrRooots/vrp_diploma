@@ -34,12 +34,12 @@ class GraphVisualization:
   graph: Graph = None
   network_graph: nx.Graph | nx.DiGraph = None
 
-  def __init__(self, problem: TSPProblem, path: list[int] = None) -> None:
+  def __init__(self, problem: TSPProblem, path: list[list[int]] = None) -> None:
     self.graph = problem.graph
     self.network_graph = nx.Graph() if self.graph.is_symmetric else nx.DiGraph()
 
     self.__prepare_network_graph()
-
+    path = path[0]
     if path is not None:
       self.options['node_color'] = [
         NODE_ACCENT_COLOR if node in path else EDGE_COLOR
